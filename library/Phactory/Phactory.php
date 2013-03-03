@@ -1,6 +1,8 @@
 <?php
 namespace Phactory;
 
+use Phactory\Exception\SetupException;
+
 class Phactory {
     /**
      * Fields configuration array
@@ -12,12 +14,12 @@ class Phactory {
     /**
      * Constructor
      *
-     * @throws Exception
+     * @throws SetupException
      * @return \Phactory\Phactory
      */
     public function __construct() {
         if (count($this->fields) === 0) {
-            throw new Exception('No field config found');
+            throw new SetupException('No field config found');
         }
     }
 
