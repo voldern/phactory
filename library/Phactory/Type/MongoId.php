@@ -19,7 +19,7 @@ class MongoId extends Type implements RandomInterface {
             return $this->randomStaticValue();
         }
 
-        return new MongoId();
+        return new \MongoId();
     }
 
     /**
@@ -30,7 +30,7 @@ class MongoId extends Type implements RandomInterface {
         $mongoId = parent::generateStatic();
 
         if (!($mongoId instanceof \MongoId)) {
-            $mongoId = new MongoId($mongoId);
+            $mongoId = new \MongoId($mongoId);
         }
 
         return $mongoId;
@@ -38,13 +38,13 @@ class MongoId extends Type implements RandomInterface {
 
     /**
      * {@inheritdoc}
-     * @return MongoId
+     * @return \MongoId
      */
     protected function randomStaticValue() {
         $mongoId = parent::randomStaticValue();
 
         if (!($mongoId instanceof \MongoId)) {
-            $mongoId = new MongoId($mongoId);
+            $mongoId = new \MongoId($mongoId);
         }
 
         return $mongoId;
