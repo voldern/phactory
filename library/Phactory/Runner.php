@@ -1,8 +1,9 @@
 <?php
 namespace Phactory;
 
-use Phactory\Exception\RuntimeException,
-    Phactory\Phactory;
+use Phactory\Phactory,
+    Phactory\Database\DatabaseInterface,
+    Phactory\Exception\RuntimeException;
 
 /**
  * Factory runner
@@ -17,6 +18,13 @@ class Runner {
      * @var Phactory
      */
     private $factory;
+
+    /**
+     * Database driver
+     *
+     * @var DatabaseInterface
+     */
+    private $db;
 
     /**
      * Config
@@ -34,8 +42,11 @@ class Runner {
      * @param Phactory $factory
      * @param array $config
      */
-    public function __construct(Phactory $factory, array $config = array()) {
+    public function __construct(Phactory $factory, DatabaseInterface $db,
+        array $config = array()) {
         $this->factory = $factory;
+
+        $this->db = $db;
 
         foreach ($config as $key => $value) {
             $this->config[$key] = $value;
@@ -77,6 +88,10 @@ class Runner {
      * @param int $count Number of rows to generate
      */
     private function generate($count) {
-        return $this->factory->generate($count);
+        $rows = $this->factory->generate($count);
+
+        array_walk($rows, array($this->db, 'insertRows'));
+
+        return $rows;
     }
 }
