@@ -1,10 +1,11 @@
 <?php
 namespace Phactory\Type;
 
-use Phactory\Exception\SetupException,
+use Phactory\Generator\StaticInterface,
+    Phactory\Exception\SetupException,
     Phactory\Exception\RuntimeException;
 
-abstract class Type implements TypeInterface {
+abstract class Type implements TypeInterface, StaticInterface {
     /**
      * Field config
      *
@@ -48,5 +49,17 @@ abstract class Type implements TypeInterface {
         }
 
         return call_user_func(array($this, $this->generatorMethod));
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws RuntimeException
+     */
+    public function generateStatic() {
+        if (!isset($this->config['value'])) {
+            throw new RuntimeException('Missing value');
+        }
+
+        return $this->config['value'];
     }
 }

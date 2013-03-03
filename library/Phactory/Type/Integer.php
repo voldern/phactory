@@ -25,4 +25,12 @@ class Integer extends Type implements RandomInterface {
 
         return rand($min, $max);
     }
+
+    /**
+     * {@inheritdoc}
+     * @return int
+     */
+    public function generateStatic(){
+        return (int) parent::generateStatic();
+    }
 }
