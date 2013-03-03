@@ -22,6 +22,7 @@ interface DatabaseInterface {
      *
      * @param array $rows Rows
      * @return DatabaseInterface
+     * @throws RuntimeException
      */
     public function insertRows(array $rows);
 
