@@ -3,7 +3,13 @@ namespace Phactory;
 
 use Phactory\Exception\SetupException;
 
-class Phactory {
+/**
+ * Abstract base class that all factories should extend
+ *
+ * @author Espen Volden <voldern@hoeggen.net>
+ * @package Phactory
+ */
+abstract class Phactory {
     /**
      * Fields configuration array
      *

@@ -4,6 +4,12 @@ namespace Phactory\Type;
 use Phactory\Exception\SetupException,
     Phactory\Generator\RandomInterface;
 
+/**
+ * Integer field type
+ *
+ * @author Espen Volden <voldern@hoeggen.net>
+ * @package Type
+ */
 class Integer extends Type implements RandomInterface {
     /**
      * {@inheritdoc}

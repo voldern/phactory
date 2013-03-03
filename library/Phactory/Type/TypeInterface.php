@@ -1,6 +1,12 @@
 <?php
 namespace Phactory\Type;
 
+/**
+ * Field type interface
+ *
+ * @author Espen Volden <voldern@hoeggen.net>
+ * @package Type
+ */
 interface TypeInterface {
     /**
      * Setup the field with given config

@@ -5,6 +5,12 @@ use Phactory\Generator\StaticInterface,
     Phactory\Exception\SetupException,
     Phactory\Exception\RuntimeException;
 
+/**
+ * Abstract base class for all field types
+ *
+ * @author Espen Volden <voldern@hoeggen.net>
+ * @package Type
+ */
 abstract class Type implements TypeInterface, StaticInterface {
     /**
      * Field config
