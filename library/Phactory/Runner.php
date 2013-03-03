@@ -57,12 +57,13 @@ class Runner {
             throw new RuntimeException('Missing repeat count');
         }
 
+        $repeatCount = $this->config['repeat']['count'];
         $rows = array();
 
-        for ($i = 0; $i < $this->config['repeat']['count']; $i++) {
+        for ($i = 0; $i < $repeatCount; $i++) {
             $rows[] = $this->generate($this->config['count']);
 
-            if (isset($this->config['repeat']['sleep'])) {
+            if (isset($this->config['repeat']['sleep']) && $repeatCount != ($i + 1)) {
                 sleep($this->config['repeat']['sleep']);
             }
         }
