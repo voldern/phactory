@@ -1,7 +1,8 @@
 <?php
 namespace Phactory;
 
-use Phactory\Exception\SetupException;
+use Phactory\Exception\SetupException,
+    Phactory\Exception\RuntimeException;
 
 /**
  * Abstract base class that all factories should extend
@@ -63,14 +64,14 @@ abstract class Phactory {
     /**
      * Generate field
      *
-     * @throws Exception
+     * @throws RuntimeException
      * @param string $field Field name
      * @param string $config Field config
      * @return array
      */
     private function generateField($field, $config) {
         if (!isset($config['type'])) {
-            throw new Exception('Type is missing on the following field: ' .
+            throw new RuntimeException('Type is missing on the following field: ' .
                 $field);
         }
 
