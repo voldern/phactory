@@ -1,8 +1,7 @@
 <?php
 namespace Phactory\Type;
 
-use Phactory\Exception\SetupException,
-    Phactory\Generator\RandomInterface;
+use Phactory\Generator\RandomInterface;
 
 /**
  * Boolean field type
@@ -23,7 +22,7 @@ class Boolean extends Type implements RandomInterface {
      * {@inheritdoc}
      * @return boolean
      */
-    public function generateStatic(){
+    public function generateStatic() {
         return (bool) parent::generateStatic();
     }
 }

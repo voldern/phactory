@@ -1,8 +1,7 @@
 <?php
 namespace Phactory\Type;
 
-use Phactory\Exception\SetupException,
-    Phactory\Generator\RandomInterface;
+use Phactory\Generator\RandomInterface;
 
 /**
  * Integer field type
@@ -36,7 +35,7 @@ class Integer extends Type implements RandomInterface {
      * {@inheritdoc}
      * @return int
      */
-    public function generateStatic(){
+    public function generateStatic() {
         return (int) parent::generateStatic();
     }
 }
