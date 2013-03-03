@@ -68,4 +68,18 @@ abstract class Type implements TypeInterface, StaticInterface {
 
         return $this->config['value'];
     }
+
+    /**
+     * Return a random value from an given array
+     *
+     * @throws RuntimeException
+     * @param array $values Values
+     */
+    protected function randomStaticValue() {
+        if (count($this->config['values']) === 0) {
+            throw new RuntimeException('Missing values');
+        }
+
+        return $this->config['values'][array_rand($this->config['values'])];
+    }
 }

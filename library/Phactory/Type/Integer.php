@@ -15,6 +15,27 @@ class Integer extends Type implements RandomInterface {
      * @return int
      */
     public function generateRandom() {
+        if (isset($this->config['values'])) {
+            return (int) $this->randomStaticValue();
+        }
+
+        return $this->generateRandomRange();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return int
+     */
+    public function generateStatic() {
+        return (int) parent::generateStatic();
+    }
+
+    /**
+     * Generate a random integer
+     *
+     * @return int
+     */
+    private function generateRandomRange() {
         $min = 0;
         $max = getrandmax();
 
@@ -29,13 +50,5 @@ class Integer extends Type implements RandomInterface {
         }
 
         return mt_rand($min, $max);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return int
-     */
-    public function generateStatic() {
-        return (int) parent::generateStatic();
     }
 }

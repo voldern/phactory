@@ -15,6 +15,10 @@ class MongoId extends Type implements RandomInterface {
      * @return \MongoId
      */
     public function generateRandom() {
+        if (isset($this->config['values'])) {
+            return $this->randomStaticValue();
+        }
+
         return new MongoId();
     }
 
@@ -24,6 +28,20 @@ class MongoId extends Type implements RandomInterface {
      */
     public function generateStatic() {
         $mongoId = parent::generateStatic();
+
+        if (!($mongoId instanceof \MongoId)) {
+            $mongoId = new MongoId($mongoId);
+        }
+
+        return $mongoId;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return MongoId
+     */
+    protected function randomStaticValue() {
+        $mongoId = parent::randomStaticValue();
 
         if (!($mongoId instanceof \MongoId)) {
             $mongoId = new MongoId($mongoId);

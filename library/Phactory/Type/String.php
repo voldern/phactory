@@ -27,7 +27,7 @@ EOD;
      */
     public function generateRandom() {
         if (isset($this->config['values'])) {
-            return $this->randomStaticValue($this->config['values']);
+            return (string) $this->randomStaticValue();
         }
 
         if (isset($this->config['words'])) {
@@ -50,21 +50,6 @@ EOD;
      */
     public function generateStatic() {
         return (string) parent::generateStatic();
-    }
-
-    /**
-     * Return a random string within a given array
-     *
-     * @throws RuntimeException
-     * @param array $values Values
-     * @return string
-     */
-    private function randomStaticValue(array $values) {
-        if (count($values) === 0) {
-            throw new RuntimeException('Missing values');
-        }
-
-        return (string) $values[array_rand($values)];
     }
 
     /**
