@@ -15,7 +15,7 @@ class Boolean extends Type implements RandomInterface {
      * @return boolean
      */
     public function generateRandom() {
-        return (bool) rand(0, 1);
+        return (bool) mt_rand(0, 1);
     }
 
     /**

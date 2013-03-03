@@ -28,7 +28,7 @@ class Integer extends Type implements RandomInterface {
             }
         }
 
-        return rand($min, $max);
+        return mt_rand($min, $max);
     }
 
     /**
