@@ -7,9 +7,6 @@ use Phactory\Exception\SetupException,
 interface RandomInterface {
     /**
      * Generate random value
-     *
-     * @throws SetupException
-     * @throws RuntimeException
      */
     public function generateRandom();
 }
