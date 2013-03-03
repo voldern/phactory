@@ -59,6 +59,10 @@ class MongoDB implements DatabaseInterface {
      * {@inheritdoc}
      */
     public function insertRows(array $rows) {
+        if ($this->collection === null) {
+            throw new RuntimeException('You need to connect() first');
+        }
+
         array_walk($rows, array($this, 'insertRow'));
 
         return $this;
