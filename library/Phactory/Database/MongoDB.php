@@ -46,11 +46,11 @@ class MongoDB implements DatabaseInterface {
 
         $port = isset($config['port']) ? (int) $config['port'] : 27017;
 
-        $mongo = new \Mongo('mongodb://' . $config['hostname'] . ':' . $config['port']);
+        $mongo = new \Mongo('mongodb://' . $config['hostname'] . ':' . $port);
 
         $this->adapter = $mongo->selectDB($config['db']);
 
-        $this->collecion = $this->adapter->selectCollection($config['collection']);
+        $this->collection = $this->adapter->selectCollection($config['collection']);
 
         return $this;
     }
