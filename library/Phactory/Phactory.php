@@ -54,7 +54,7 @@ abstract class Phactory {
     private function generateRow() {
         $row = array();
 
-        foreach ($this->fields AS $field => $config) {
+        foreach ($this->fields as $field => $config) {
             $row = $row + $this->generateField($field, $config);
         }
 
