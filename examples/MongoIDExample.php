@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
-class MongoIdFactory extends \Phactory\Phactory {
+class MongoIdExample extends \Phactory\Phactory {
     protected $fields = array(
         'staticField' => array(
             'type' => '\Phactory\Type\MongoId',
@@ -20,6 +18,3 @@ class MongoIdFactory extends \Phactory\Phactory {
         )
     );
 }
-
-$fact = new MongoIdFactory();
-var_dump($fact->generate(1));

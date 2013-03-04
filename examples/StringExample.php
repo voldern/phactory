@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
-class StringFactory extends \Phactory\Phactory {
+class StringExample extends \Phactory\Phactory {
     protected $fields = array(
         'staticString' => array(
             'type' => '\Phactory\Type\String',
@@ -25,6 +23,3 @@ class StringFactory extends \Phactory\Phactory {
         )
     );
 }
-
-$intfact = new StringFactory();
-var_dump($intfact->generate(1));

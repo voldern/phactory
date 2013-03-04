@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
-class DateTimeFactory extends \Phactory\Phactory {
+class DateTimeExample extends \Phactory\Phactory {
     protected $fields = array(
         'staticField' => array(
             'type' => '\Phactory\Type\DateTime',
@@ -20,6 +18,3 @@ class DateTimeFactory extends \Phactory\Phactory {
         )
     );
 }
-
-$fact = new DateTimeFactory();
-var_dump($fact->generate(1));

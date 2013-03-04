@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
-class IntegerFactory extends \Phactory\Phactory {
+class IntegerExample extends \Phactory\Phactory {
     protected $fields = array(
         'randomField' => array(
             'type' => '\Phactory\Type\Integer',
@@ -15,6 +13,3 @@ class IntegerFactory extends \Phactory\Phactory {
         )
     );
 }
-
-$intfact = new IntegerFactory();
-var_dump($intfact->generate(1));
