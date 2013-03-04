@@ -1,7 +1,8 @@
 <?php
 namespace Phactory\Console\Command;
 
-use Symfony\Component\Console\Command\Command,
+use Phactory\Exception\ConsoleException,
+    Symfony\Component\Console\Command\Command,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -37,6 +38,13 @@ class PopulateDB extends Command {
                 1
             )
             ->addOption(
+                'dir',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                "Folder to look for factory in if it couldn't be autoloaded",
+                'factories'
+            )
+            ->addOption(
                 'file',
                 'f',
                 InputOption::VALUE_OPTIONAL,
@@ -68,25 +76,15 @@ class PopulateDB extends Command {
      * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $factory = $input->getArgument('factory');
         $file = $input->getOption('file');
         $rowCount = (int) $input->getArgument('count');
 
-        if (!class_exists($factory) && empty($file)) {
-            $output->writeln('<error>Could not find factory. Please set the path ' .
-                'using --file</error>');
-
+        try {
+            $factory = $this->getFactory($input);
+        } catch (ConsoleException $exception) {
+            $output->writeln('<error>' . $exception->getMessage() . '</error>');
             return false;
         }
-
-        require_once($file);
-
-        if (!class_exists($factory)) {
-            $output->writeln('<error>Could not find factory.</error>');
-            return false;
-        }
-
-        $factory = new $factory();
 
         $dbConfig = array(
             'hostname' => $input->getOption('host'),
@@ -94,7 +92,42 @@ class PopulateDB extends Command {
             'collection' => $input->getArgument('table')
         );
 
-        $this->populateDB($dbConfig, $factory->generate($rowCount));
+        $rows = $this->populateDB($dbConfig, $factory->generate($rowCount));
+
+        $output->writeln('<info>Inserted ' . count($rows) . ' rows</info>');
+
+        if ($input->getOption('verbose')) {
+            foreach ($rows as $row) {
+                $output->writeln(print_r($row, true));
+            }
+        }
+    }
+
+    /**
+     * Look for the given factory
+     *
+     * @throws ConsoleException
+     * @param InputInterface $input Input
+     * @return Phactory
+     */
+    private function getFactory(InputInterface $input) {
+        $factoryName = $input->getArgument('factory');
+
+        if (!class_exists($factoryName)) {
+            $file = $input->getOption('file');
+            $dir = $input->getOption('dir');
+
+            if (!empty($file) && file_exists($file)) {
+                require_once($file);
+            } else if (file_exists($dir . '/' . $factoryName . '.php')) {
+                require_once($dir . '/' . $factoryName . '.php');
+            } else {
+                throw new ConsoleException('Could not find factory. '.
+                    'Try suppling --file or --directory');
+            }
+        }
+
+        return new $factoryName();
     }
 
     /**
@@ -102,7 +135,7 @@ class PopulateDB extends Command {
      *
      * @param array $config DB config
      * @param array $rows Rows
-     * @return void
+     * @return array
      */
     private function populateDB(array $config, array $rows) {
         $db = new \Phactory\Database\MongoDB();
@@ -110,5 +143,7 @@ class PopulateDB extends Command {
         $db->connect($config);
 
         $db->insertRows($rows);
+
+        return $db->getInsertedRows();
     }
 }
