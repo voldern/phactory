@@ -1,0 +1,21 @@
+{
+    "name": "voldern/phactory",
+    "description": "PHP data factory",
+    "homepage": "https://github.com/voldern/phactory",
+    "license": "BEER-WARE",
+    "authors": [
+        {
+            "name": "Espen Volden",
+            "email": "voldern@hoeggen.net",
+            "role": "lead"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": {
+            "Phactory": "library"
+        }
+    }
+}
