@@ -17,7 +17,18 @@ class String extends Type implements RandomInterface {
      * @var string
      */
     private $lorem = <<<'EOD'
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rhoncus mi vitae enim vulputate sagittis. Mauris ut massa et mi pellentesque varius. Vestibulum eu orci in mi luctus pharetra. Nullam eros turpis, fringilla nec molestie a, vestibulum non mi. Maecenas lorem sem, consectetur ut luctus non, placerat sit amet nibh. In sed metus eget arcu aliquet blandit non sed lacus. Suspendisse sollicitudin leo in quam consectetur in elementum augue porttitor. Duis commodo vestibulum velit. Suspendisse at justo eu lorem vehicula ultricies sed at eros. Duis pretium massa sed odio ultrices fermentum. Curabitur et dui ac elit condimentum lobortis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id arcu lacus. Phasellus tristique elit magna, et tempor lectus. Nunc aliquet, urna ac adipiscing convallis, metus tellus ornare tortor, ac bibendum arcu metus id diam. Nunc at tortor ut velit pretium consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rhoncus mi
+vitae enim vulputate sagittis. Mauris ut massa et mi pellentesque varius.
+Vestibulum eu orci in mi luctus pharetra. Nullam eros turpis, fringilla nec
+molestie a, vestibulum non mi. Maecenas lorem sem, consectetur ut luctus non,
+placerat sit amet nibh. In sed metus eget arcu aliquet blandit non sed lacus.
+Suspendisse sollicitudin leo in quam consectetur in elementum augue porttitor.
+Duis commodo vestibulum velit. Suspendisse at justo eu lorem vehicula ultricies
+sed at eros. Duis pretium massa sed odio ultrices fermentum. Curabitur et
+dui ac elit condimentum lobortis. Lorem ipsum dolor sit amet, consectetur
+adipiscing elit. Sed id arcu lacus. Phasellus tristique elit magna, et tempor lectus.
+Nunc aliquet, urna ac adipiscing convallis, metus tellus ornare tortor, ac bibendum arcu
+metus id diam. Nunc at tortor ut velit pretium consequat.
 EOD;
 
     /**
