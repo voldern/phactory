@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/../library/autoloader.php';
-
-spl_autoload_register('autoload');
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class IntegerFactory extends \Phactory\Phactory {
     protected $fields = array(
