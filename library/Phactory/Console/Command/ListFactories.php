@@ -6,7 +6,16 @@ use Symfony\Component\Console\Command\Command,
     Symfony\Component\Console\Input\InputOption,
     Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * CLI command used to list all factories in a folder
+ *
+ * @author Espen Volden <voldern@hoeggen.net>
+ * @package Command
+ */
 class ListFactories extends Command {
+    /**
+     * {@inheritdoc}
+     */
     protected function configure() {
         $this->setName('phactory:list')
             ->setDescription('List all available factories')
@@ -18,33 +27,76 @@ class ListFactories extends Command {
             );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $dir = $input->getOption('dir');
+        $dirName = $input->getOption('dir');
 
-        if (empty($dir)) {
+        if (empty($dirName)) {
             throw new \Exception('Missing dir option');
         }
 
-        if (!is_dir($dir)) {
+        if (!is_dir($dirName)) {
             throw new \Exception('Invalid dir specified');
         }
 
-        $dir = dir($dir);
+        $dir = dir($dirName);
 
         $output->writeln('<info>Available factories:</info>');
 
         while (false !== ($file = $dir->read())) {
-            $this->printFactoryName($file, $output);
+            if ($file != '.' && $file != '..') {
+                $this->printFactoryNames($dirName, $file, $output);
+            }
         }
     }
 
-    private function printFactoryName($file, $output) {
-        if ($file == '.' || $file == '..') {
+    /**
+     * Lists the factories in the given file. Prints nothing if there are none
+     *
+     * @param string $dir Directory
+     * @param string $file Filename
+     * @param OutputInterface $output Output
+     * @return void
+     */
+    private function printFactoryNames($dir, $file, OutputInterface $output) {
+        $fileCode = file_get_contents($dir . '/' . $file);
+
+        $factories = $this->getClasses($fileCode);
+
+        if (count($factories) === 0) {
             return;
         }
 
-        $factoryName = substr($file, 0, strrpos($file, '.'));
+        $output->writeln('<comment>' . $dir . '/' . $file . ': ' .
+            implode(', ', $factories) . '</comment>');
+    }
 
-        $output->writeln('<comment>' . $factoryName . '</comment>');
+    /**
+     * Returns classes in the given PHP code by analysing the AST
+     *
+     * @param string $code PHP code to analyze
+     * @return array
+     */
+    private function getClasses($code) {
+        $classes = array();
+        $tokens = token_get_all($code);
+        $tokenCount = count($tokens);
+
+        // First two tokens are always <?php
+        for ($i = 2; $i < count($tokens); $i++) {
+            if (!is_array($tokens[$i - 2]) || !is_array($tokens[$i - 1]) ||
+                !is_array($tokens[$i])) {
+                continue;
+            }
+
+            if ($tokens[$i - 2][0] === T_CLASS && $tokens[$i - 1][0] === T_WHITESPACE &&
+                $tokens[$i][0] === T_STRING) {
+                $classes[] = $tokens[$i][1];
+            }
+        }
+
+        return $classes;
     }
 }
