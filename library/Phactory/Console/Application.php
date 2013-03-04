@@ -8,5 +8,6 @@ class Application extends Console\Application {
         parent::__construct('PhactoryCli', '0.1');
 
         $this->add(new Command\ListFactories());
+        $this->add(new Command\PopulateDB());
     }
 }
