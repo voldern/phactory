@@ -32,7 +32,8 @@ class Runner {
      * @var array
      */
     private $config = array(
-        'count' => 5,
+        'count' => 1,
+        'sleep' => false,
         'repeat' => false
     );
 
@@ -40,26 +41,27 @@ class Runner {
      * Constructor
      *
      * @param Phactory $factory
-     * @param array $config
+     * @param DatabaseInterface $db
      */
-    public function __construct(Phactory $factory, DatabaseInterface $db,
-        array $config = array()) {
+    public function __construct(Phactory $factory, DatabaseInterface $db) {
         $this->factory = $factory;
-
         $this->db = $db;
-
-        foreach ($config as $key => $value) {
-            $this->config[$key] = $value;
-        }
     }
 
     /**
      * Start generating rows
      *
      * @throws RuntimeException
+     * @param array $config
      * @return array
      */
-    public function run() {
+    public function run(array $config = array()) {
+        if (count($config) !== 0) {
+            foreach ($config as $key => $value) {
+                $this->config[$key] = $value;
+            }
+        }
+
         if (!is_array($this->config['repeat'])) {
             return $this->generate($this->config['count']);
         }
@@ -88,9 +90,21 @@ class Runner {
      * @param int $count Number of rows to generate
      */
     private function generate($count) {
-        $rows = $this->factory->generate($count);
+        if ($count === 1 || !$this->config['sleep']) {
+            $rows = $this->factory->generate($count);
 
-        array_walk($rows, array($this->db, 'insertRows'));
+            $this->db->insertRows($rows);
+        } else {
+            $rows = array();
+
+            for ($i = 0; $i < $count; $i++) {
+                $rows[] = $this->factory->generate(1);
+
+                $this->db->insertRows($rows[$i]);
+
+                sleep($this->config['sleep']);
+            }
+        }
 
         return $rows;
     }

@@ -77,7 +77,6 @@ class PopulateDB extends Command {
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $file = $input->getOption('file');
-        $rowCount = (int) $input->getArgument('count');
 
         try {
             $factory = $this->getFactory($input);
@@ -86,18 +85,19 @@ class PopulateDB extends Command {
             return false;
         }
 
-        $dbConfig = array(
-            'hostname' => $input->getOption('host'),
-            'db' => $input->getOption('database'),
-            'collection' => $input->getArgument('table')
-        );
+        $db = $this->getDB($input);
 
-        $rows = $this->populateDB($dbConfig, $factory->generate($rowCount));
+        $factoryRunner = new \Phactory\Runner($factory, $db);
+        $factoryRunner->run(array(
+            'count' => (int) $input->getArgument('count')
+        ));
 
-        $output->writeln('<info>Inserted ' . count($rows) . ' rows</info>');
+        $insertedRows = $db->getInsertedRows();
+
+        $output->writeln('<info>Inserted ' . count($insertedRows) . ' rows</info>');
 
         if ($input->getOption('verbose')) {
-            foreach ($rows as $row) {
+            foreach ($insertedRows as $row) {
                 $output->writeln(print_r($row, true));
             }
         }
@@ -131,19 +131,21 @@ class PopulateDB extends Command {
     }
 
     /**
-     * Populate database with the given rows
+     * Get database device
      *
-     * @param array $config DB config
-     * @param array $rows Rows
-     * @return array
+     * @param InputInterface $input Input
+     * @return \Phactory\Database\MongoDB
      */
-    private function populateDB(array $config, array $rows) {
-        $db = new \Phactory\Database\MongoDB();
+    private function getDB(InputInterface $input) {
+        $config = array(
+            'hostname' => $input->getOption('host'),
+            'db' => $input->getOption('database'),
+            'collection' => $input->getArgument('table')
+        );
 
+        $db = new \Phactory\Database\MongoDB();
         $db->connect($config);
 
-        $db->insertRows($rows);
-
-        return $db->getInsertedRows();
+        return $db;
     }
 }
