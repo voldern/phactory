@@ -1,7 +1,8 @@
 <?php
 namespace Phactory\Console\Command;
 
-use Symfony\Component\Console\Command\Command,
+use Phactory\Exception\ConsoleException,
+    Symfony\Component\Console\Command\Command,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Input\InputOption,
     Symfony\Component\Console\Output\OutputInterface;
@@ -23,7 +24,8 @@ class ListFactories extends Command {
                 'dir',
                 'd',
                 InputOption::VALUE_REQUIRED,
-                'Folder to look for factories in'
+                'Folder to look for factories in',
+                'factories'
             );
     }
 
@@ -33,12 +35,10 @@ class ListFactories extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $dirName = $input->getOption('dir');
 
-        if (empty($dirName)) {
-            throw new \Exception('Missing dir option');
-        }
-
         if (!is_dir($dirName)) {
-            throw new \Exception('Invalid dir specified');
+            $output->writeln('<error>' . $dirName . ' is not a directory. ' .
+                'Supply a valid directory using --dir.</error>');
+            return false;
         }
 
         $dir = dir($dirName);
