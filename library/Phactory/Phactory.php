@@ -40,7 +40,7 @@ abstract class Phactory {
         $rows = array();
 
         for ($i = 0; $i < $count; $i++) {
-            $rows = $rows + $this->generateRow();
+            $rows[] = $this->generateRow();
         }
 
         return $rows;
