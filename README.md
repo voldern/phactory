@@ -15,57 +15,59 @@ Add ```voldern/phactory``` as a dev dependency using composer.
 ### Defining a factory
 By default factories should recide in a folder named ```factories``` and the filename should be the same as the factory name.
 
-Create a class extending ```\Phactory\Phactory``` with the attributes configuration set on ```$fields```.
+Create a class extending ```\Phactory\Phactory``` and return the attributes configuration from a method named ```getFieldsConfig```.
 
 ```php
 class InteractionFactory extends \Phactory\Phactory {
-    protected $fields = array(
-        'feedModuleId' => array(
-            'type' => '\Phactory\Type\MongoId',
-            'generator' => 'random'
-        ),
-        'type' => array(
-            'type' => '\Phactory\Type\String',
-            'generator' => 'static',
-            'value' => 'interaction'
-        ),
-        'title' => array(
-            'type' => '\Phactory\Type\String',
-            'generator' => 'random',
-            'values' => array('Tittelen', 'Dette er en tittel', 'Nyhetssak',
-                'VM 2013 Dag 1', 'EM 2012')
-        ),
-        'name' => array(
-            'type' => '\Phactory\Type\String',
-            'generator' => 'random',
-            'values' => array('VM 2013', 'EM 2012', 'Navnet er langt', 'Dette er en test')
-        ),
-        'moderated' => array(
-            'type' => '\Phactory\Type\Boolean',
-            'generator' => 'static',
-            'value' => false
-        ),
-        'permissions' => array(
-            'type' => '\Phactory\Type\ArrayType',
-            'generator' => 'static',
-            'value' => array()
-        ),
-        'startDate' => array(
-            'type' => '\Phactory\Type\DateTime',
-            'generator' => 'static',
-            'value' => 'now'
-        ),
-        'endDate' => array(
-            'type' => '\Phactory\Type\DateTime',
-            'generator' => 'random',
-            'range' => array('min' => '+5 minutes', 'max' => '+20 minutes')
-        ),
-        'refreshRate' => array(
-            'type' => '\Phactory\Type\Integer',
-            'generator' => 'random',
-            'range' => array('min' => 5, 'max' => 30)
-        )
-    );
+    protected function getFieldsConfig() {
+        return array(
+            'feedModuleId' => array(
+                'type' => '\Phactory\Type\MongoId',
+                'generator' => 'random'
+             ),
+            'type' => array(
+                'type' => '\Phactory\Type\String',
+                'generator' => 'static',
+                'value' => 'interaction'
+            ),
+            'title' => array(
+                'type' => '\Phactory\Type\String',
+                'generator' => 'random',
+                'values' => array('Tittelen', 'Dette er en tittel', 'Nyhetssak',
+                    'VM 2013 Dag 1', 'EM 2012')
+            ),
+            'name' => array(
+                'type' => '\Phactory\Type\String',
+                'generator' => 'random',
+                'values' => array('VM 2013', 'EM 2012', 'Navnet er langt', 'Dette er en test')
+            ),
+            'moderated' => array(
+                'type' => '\Phactory\Type\Boolean',
+                'generator' => 'static',
+                'value' => false
+            ),
+            'permissions' => array(
+                'type' => '\Phactory\Type\ArrayType',
+                'generator' => 'static',
+                'value' => array()
+            ),
+            'startDate' => array(
+                'type' => '\Phactory\Type\DateTime',
+                'generator' => 'static',
+                'value' => 'now'
+            ),
+            'endDate' => array(
+                'type' => '\Phactory\Type\DateTime',
+                'generator' => 'random',
+                'range' => array('min' => '+5 minutes', 'max' => '+20 minutes')
+            ),
+            'refreshRate' => array(
+                'type' => '\Phactory\Type\Integer',
+                'generator' => 'random',
+                'range' => array('min' => 5, 'max' => 30)
+            )
+        );
+    }
 }
 ```
 
