@@ -12,11 +12,18 @@ use Phactory\Exception\SetupException,
  */
 abstract class Phactory {
     /**
-     * Fields configuration array
+     * Holds field config
      *
      * @var array
      */
-    protected $fields = array();
+    private $fields;
+
+    /**
+     * Get field config
+     *
+     * @return array
+     */
+    abstract protected function getFieldsConfig();
 
     /**
      * Constructor
@@ -25,9 +32,13 @@ abstract class Phactory {
      * @return \Phactory\Phactory
      */
     public function __construct() {
-        if (count($this->fields) === 0) {
-            throw new SetupException('No field config found');
+        $fields = $this->getFieldsConfig();
+
+        if (count($fields) === 0) {
+            throw new SetupException('Empty fields config');
         }
+
+        $this->fields = $fields;
     }
 
     /**
