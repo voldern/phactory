@@ -51,7 +51,7 @@ abstract class Phactory {
         $rows = array();
 
         for ($i = 0; $i < $count; $i++) {
-            $rows[] = $this->generateRow();
+            $rows[] = $this->generateRow($this->fields);
         }
 
         return $rows;
@@ -62,10 +62,10 @@ abstract class Phactory {
      *
      * @return array
      */
-    private function generateRow() {
+    private function generateRow($fields) {
         $row = array();
 
-        foreach ($this->fields as $field => $config) {
+        foreach ($fields as $field => $config) {
             $row = $row + $this->generateField($field, $config);
         }
 
@@ -84,6 +84,11 @@ abstract class Phactory {
         if (!isset($config['type'])) {
             throw new RuntimeException('Type is missing on the following field: ' .
                 $field);
+        }
+
+        // Adds support for factory generated arrays
+        if ($config['type'] == 'array') {
+            return array($field => $this->generateRow($config['fields']));
         }
 
         $fieldGenerator = new $config['type']();
