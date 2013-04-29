@@ -65,6 +65,13 @@ class PopulateDB extends Command {
                 'phactory'
             )
             ->addOption(
+                'sleep',
+                's',
+                InputOption::VALUE_OPTIONAL,
+                'Seconds to sleep between each insert',
+                false
+            )
+            ->addOption(
                 'cleanup',
                 'c',
                 InputOption::VALUE_NONE,
@@ -88,8 +95,15 @@ class PopulateDB extends Command {
         $db = $this->getDB($input);
 
         $factoryRunner = new \Phactory\Runner($factory, $db);
+
+        $sleep = $input->getOption('sleep');
+        if ($sleep !== false) {
+            $sleep = (int) $sleep;
+        }
+
         $factoryRunner->run(array(
-            'count' => (int) $input->getArgument('count')
+            'count' => (int) $input->getArgument('count'),
+            'sleep' => $sleep
         ));
 
         $insertedRows = $db->getInsertedRows();

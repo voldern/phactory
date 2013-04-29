@@ -57,9 +57,7 @@ class Runner {
      */
     public function run(array $config = array()) {
         if (count($config) !== 0) {
-            foreach ($config as $key => $value) {
-                $this->config[$key] = $value;
-            }
+            $this->config = array_merge($this->config, $config);
         }
 
         if (!is_array($this->config['repeat'])) {
